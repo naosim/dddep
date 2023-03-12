@@ -5,7 +5,11 @@ import fs from "fs";
 
 const javaClassesJsonPath = process.argv[2];
 
-const javaClasses = JSON.parse(fs.readFileSync(javaClassesJsonPath, 'utf8'));
+const json = JSON.parse(fs.readFileSync(javaClassesJsonPath, 'utf8'));
+if(json.schemaVersion.split('.')[0] != 2) {
+  throw new Error(`schemaVersionが${json.schemaVersion}です。本プログラムは2.xを前提に作られています。`);
+}
+const javaClasses = json.classes;
 
 // repo
 const ignoreClassesMap = ignoreClasses.reduce((memo, v) => {memo[v] = true; return memo}, {});
